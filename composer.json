@@ -1,0 +1,18 @@
+{
+    "name": "pavlm/yii2-model-selector",
+    "description": "DB oriented replace for <select>",
+    "type": "yii2-extension",
+    "authors": [
+        {
+            "name": "pavlm",
+            "email": "pavlm.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload" : {
+    	"psr-4" : {
+    		"pavlm\\modelSelector\\" : ""
+    	}
+    }
+}
