@@ -46,9 +46,19 @@ class ModelSelector extends InputWidget
     public $itemLabel = 'name';
     
     /**
-     * @var string name for searching, if not set then $itemLabel used
+     * @var string|array names for searching, if not set then $itemLabel used
      */
-    public $itemFieldSearch;
+    public $itemSearchFields;
+    
+    /**
+     * @var bool|string if false then search by phrase, if true then search by words
+     */
+    public $splitSearchQuery = false;
+    
+    /**
+     * @var integer top limit of splitting
+     */
+    public $splitToMaxWords = 10;
     
     /**
      * @var string|Closure shows ui link to selected item
@@ -152,23 +162,50 @@ class ModelSelector extends InputWidget
         die();
     }
     
-    public function loadModels()
+    /**
+     * @param ActiveQuery $query
+     * @param string $filter
+     */
+    public function applyFilter($query, $filter)
     {
-        $q = $this->getActiveQuery();
-        $query = Yii::$app->request->post('query');
-        $page = intval(Yii::$app->request->post('page', 0));
-        
         if ($this->itemSearchQueryFunc) {
             // search by user criteria
             $searchFunc = $this->itemSearchQueryFunc;
-            $searchFunc($q, $query);
-        } elseif (!empty($query)) {
-            $field = $this->itemFieldSearch ?: (is_string($this->itemLabel) ? $this->itemLabel : null);
-            if ($field) {
-                // search by label
-                $q->andWhere(['like', $field, $query]);
+            $searchFunc($query, $filter);
+        } elseif (!empty($filter)) {
+            $fields = !empty($this->itemSearchFields) ? (array)$this->itemSearchFields : (is_string($this->itemLabel) ? [$this->itemLabel] : null);
+            if (!empty($fields)) {
+                if (!$this->splitSearchQuery) {
+                    // search by phrase
+                    $conditions = [];
+                    foreach ($fields as $field) {
+                        $conditions[] = ['like', $field, $filter];
+                    }
+                    $query->andWhere(array_merge(['OR'], $conditions));
+                } else {
+                    // search by words
+                    $splitter = is_bool($this->splitSearchQuery) ? "#\s+#" : $this->splitSearchQuery;
+                    $words = array_filter(array_splice(preg_split($splitter, $filter), 0, $this->splitToMaxWords));
+                    $conditions = [];
+                    foreach ($words as $word) {
+                        $wconditions = [];
+                        foreach ($fields as $field) {
+                            $wconditions[] = ['like', $field, $word];
+                        }
+                        $conditions[] = array_merge(['OR'], $wconditions);
+                    }
+                    $query->andWhere(array_merge(['AND'], $conditions));
+                }
             }
         }
+    }
+    
+    public function loadModels()
+    {
+        $q = $this->getActiveQuery();
+        $filter = Yii::$app->request->post('query');
+        $page = intval(Yii::$app->request->post('page', 0));
+        $this->applyFilter($q, $filter);
         if ($this->listPageSize) {
             $q->limit($this->listPageSize);
             $q->offset($this->listPageSize * $page);
