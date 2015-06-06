@@ -18,14 +18,15 @@ $selected = !empty($opts['model']);
 $defaultOptions = [
     'class' => 'model-selector input-group ms-input-group',
 ];
+$wrapId = $widget->id . '-wrap';
 ?>
 
 <? 
-echo Html::beginTag('div', array_merge(['id' => $widget->id, 'data-options' => ($widget->manualInit ? $opts : null) ], $defaultOptions, $widget->options));
+echo Html::beginTag('div', array_merge($defaultOptions, $widget->options, ['id' => $wrapId, 'data-options' => ($widget->manualInit ? $opts : null)]));
 ?>
 	<? 
 	$name = $widget->name ?: Html::getInputName($widget->model, $widget->attribute);
-	echo Html::textInput($name, null, array_merge($widget->options, ['id' => $widget->id . '-field', 'class' => 'ms-field form-control'])); 
+	echo Html::textInput($name, null, array_merge($widget->options, ['id' => $widget->id, 'class' => 'ms-field form-control'])); 
 	?>
 	<? if ($widget->itemLink): // !empty($opts['model']['link']) ?>
     	<? echo Html::a('<i class="glyphicon glyphicon-share-alt"></i>', 
@@ -35,6 +36,6 @@ echo Html::beginTag('div', array_merge(['id' => $widget->id, 'data-options' => (
 <?
 echo Html::endTag('div');
 if (!$widget->manualInit) {
-    $this->registerJs("\$('#".$widget->id."').modelSelector(".Json::encode($opts).");", View::POS_READY, $widget->id);
+    $this->registerJs("\$('#".$wrapId."').modelSelector(".Json::encode($opts).");", View::POS_READY, $wrapId);
 }
 ?>
