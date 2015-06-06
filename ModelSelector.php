@@ -94,7 +94,6 @@ class ModelSelector extends InputWidget
      * @var array
      */
     public $options = [
-        //'style' => 'width:100%',
     ];
     
     /**
@@ -104,12 +103,18 @@ class ModelSelector extends InputWidget
         //'select2Options' => [],
     ];
     
-    public $hiddenOptions = [];
-    
     /**
      * @var bool if true then no auto init also embeds widget options into wrapper tag, requires manual $(...).modelSelector() call
      */
     public $manualInit = false;
+    
+    public function init()
+    {
+        parent::init();
+        if (isset($this->options['id'])) {
+            $this->id = $this->options['id'];
+        }
+    }
     
     public function run()
     {
