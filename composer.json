@@ -9,7 +9,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+    	"bower-asset/select2": "~3"
+    },
     "autoload" : {
     	"psr-4" : {
     		"pavlm\\modelSelector\\" : ""
