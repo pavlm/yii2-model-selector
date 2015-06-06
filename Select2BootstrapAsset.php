@@ -3,18 +3,16 @@ namespace pavlm\modelSelector;
 
 use yii\web\AssetBundle;
 
-class ModelSelectorAsset extends AssetBundle
+class Select2BootstrapAsset extends AssetBundle
 {
-    public $js = [
-        'model-selector.js',
+    public $css = [
+        'select2-bootstrap.css',
     ];
-    
+
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-    
-    public $publishOptions = [];
-    
+
     public function init()
     {
         $this->sourcePath = __DIR__ . '/assets';

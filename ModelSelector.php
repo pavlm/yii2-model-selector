@@ -51,11 +51,6 @@ class ModelSelector extends InputWidget
     /**
      * @var boolean TODO check
      */
-    public $showItemLink = false;
-    
-    /**
-     * @var boolean TODO check
-     */
     public $showItemClear = false;
     
     /**
@@ -82,7 +77,7 @@ class ModelSelector extends InputWidget
      * @var array
      */
     public $options = [
-        'style' => 'width:100%',
+        //'style' => 'width:100%',
     ];
     
     /**

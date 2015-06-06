@@ -16,25 +16,6 @@
         	var self = this;
        	
         	var s2 = $(".ms-field", this.$el).select2($.extend({
-        		/*
-        		query:function(q){
-        			self.debug(self, q);
-        			if (!q.term || !q.term.length) {
-    					self.loadItems(null, function(data){
-    						q.callback({results: data, more:false});
-    					});
-        			} else {
-        				if (self.items) {
-        					var queryFn = Select2.query.local(self.items);
-        					queryFn(q);
-        				} else {
-        					self.loadItems(q.term, function(data){
-        							q.callback({results: data, more:false});
-        					});
-        				}
-        			}
-        		}
-        		*/
         	    ajax: {
         	        url: this.options.ajaxUrl || "",
         	        type:'post', // TODO customize
@@ -60,13 +41,12 @@
         	}, this.options.select2Options))
         	.on('change', function(){
         		var v = $(this).select2('val');
-        		$('.ms-value', self.$el).val(v);
-        		/*
-        		var item = self.getItemById(v);
-        		if (item && item.link) {
-        			$('.ms-link', self.$el).attr('href', item.link);
+        		var data = $(this).select2('data');
+       			var link = $('.ms-link', self.$el);
+        		if (data && data.link) {
+        			link.attr('href', data.link);
         		}
-        		*/
+        		link.attr('disabled', !data || !data.link);
         	});  
         	
         	if (this.options.value && this.options.model) {
@@ -77,16 +57,6 @@
         	}
         },
         
-        getItemById : function(id) {
-        	var found = false;
-        	$.each(this.items, function(i, item){
-        		if (item.id == id) {
-        			found = item;
-        		}
-        	});
-        	return found;
-        },
-        
         debug : function() {
         	if (window.console)
         		console.log.apply(console, arguments);
@@ -95,7 +65,6 @@
     };
     
     $.ModelSelector = ModelSelector;
-    
 
 	$.ModelSelector.defaults = {
 		'select2Options' : {
