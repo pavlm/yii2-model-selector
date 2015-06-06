@@ -1,9 +1,11 @@
 <?php
 namespace pavlm\modelSelector;
 
+use Yii;
 use yii\widgets\InputWidget;
 use yii\db\ActiveQuery;
 use yii\helpers\Html;
+use yii\db\ActiveRecord;
 
 /**
  * 
@@ -13,23 +15,28 @@ use yii\helpers\Html;
  */
 class ModelSelector extends InputWidget
 {
+    /**
+     * @var ActiveQuery query to listed items
+     */
+    public $query;
 
     /**
-     * @var string active record entity class name wich listed in dropdown
-     */
-    public $itemType;
-    
-    /**
-     * @var array - predefined entity query criteria
+     * @var array - predefined model query criteria
      */
     public $queryConfig = [];
+    
+    /**
+     * @var string active record model class name wich listed in dropdown. Alternative to $query
+     */
+    public $itemType;
     
     /**
      * @var Closure - returns criteria to filter entities by query (first parameter)
      */
     public $itemSearchQueryFunc;
+    
     /**
-     * @var string entity id field name
+     * @var string model id field name
      */
     public $itemId = 'id';
     
@@ -54,7 +61,7 @@ class ModelSelector extends InputWidget
     public $showItemClear = false;
     
     /**
-     * @var int - size of dataset for server paging, if zero - all records loaded
+     * @var int - size of dataset for server paging, if zero than all records loaded
      */
     public $listPageSize = 20;
     
@@ -90,7 +97,7 @@ class ModelSelector extends InputWidget
     public $hiddenOptions = [];
     
     /**
-     * @var bool if true then no autoinit also embeds widget options into wrapper tag, requires $(...).modelSelector() call
+     * @var bool if true then no auto init also embeds widget options into wrapper tag, requires manual $(...).modelSelector() call
      */
     public $manualInit = false;
     
@@ -110,7 +117,7 @@ class ModelSelector extends InputWidget
 
     public function getAttribValue() {
         $val = $this->model ? Html::getAttributeValue($this->model, $this->attribute) : null;
-        if ($val instanceof CActiveRecord)
+        if ($val instanceof ActiveRecord)
             $val = $val->{$this->itemId};
         return $val;
     }
@@ -118,14 +125,14 @@ class ModelSelector extends InputWidget
     public function getJSOptions()
     {
         $val = $this->getAttribValue();
-        $e = $val ? $this->formatModel($this->loadModel($val)) : false;
+        $m = $val ? $this->formatModel($this->loadModel($val)) : false;
         $data = array(
             'ajaxId' => $this->getAjaxId(),
             'value' => $val,
             'ajaxUrl' => $this->ajaxRoute ? Yii::$app->createUrl($this->ajaxRoute) : null,
             'ajaxView' => $this->ajaxRoute ? $this->ajaxView : null,
             'listPageSize' => $this->listPageSize,
-            'model' => $e,
+            'model' => $m,
         );
         $data = array_merge($data, $this->jsOptions);
         return $data;
@@ -140,19 +147,16 @@ class ModelSelector extends InputWidget
     {
         while (@ob_end_clean()) {}
         $es = $this->loadModels();
-        $fes = $this->formatModels($es);
-        echo json_encode($fes);
+        $fms = $this->formatModels($es);
+        echo json_encode($fms);
         die();
     }
     
     public function loadModels()
     {
-        $class = $this->itemType;
-        //$q = new ActiveQuery($this->itemType, $this->queryConfig);
-        $q = $class::find();
-        \Yii::configure($q, $this->queryConfig);
-        $query = @$_REQUEST['query'];
-        $page = intval(@$_REQUEST['page']); // todo make pageParamName
+        $q = $this->getActiveQuery();
+        $query = Yii::$app->request->post('query');
+        $page = intval(Yii::$app->request->post('page', 0));
         
         if ($this->itemSearchQueryFunc) {
             // search by user criteria
@@ -174,39 +178,46 @@ class ModelSelector extends InputWidget
     
     public function loadModel($pk)
     {
-        $q = new ActiveQuery($this->itemType);
+        $q = $this->getActiveQuery();
         $q->where([$this->itemId => $pk]);
         return $q->one();
-        /*
-        $cr = $this->itemCriteria ? (!is_array($this->itemCriteria) ? $this->itemCriteria : new CDbCriteria($this->itemCriteria)) : new CDbCriteria();
-        $e = CActiveRecord::model($this->itemType)->findByPk($pk, $cr);
-        return $e;
-        */
     }
     
-    public function formatModels($es)
+    public function getActiveQuery()
     {
-        $fes = [];
-        foreach ($es as $e) {
-            $fes[] = $this->formatModel($e);
+        if ($this->query) {
+            $q = $this->query;
+        } else {
+            $class = $this->itemType;
+            $q = $class::find();
         }
-        return $fes;
+        \Yii::configure($q, $this->queryConfig);
+        return $q;
     }
     
-    public function formatModel($e)
+    public function formatModels($ms)
     {
-        if (!$e)
-            return $e;
+        $fms = [];
+        foreach ($ms as $m) {
+            $fms[] = $this->formatModel($m);
+        }
+        return $fms;
+    }
+    
+    public function formatModel($m)
+    {
+        if (!$m)
+            return $m;
         $itemLabel = $this->itemLabel;
-        $fe = array(
-            'id' => $e->{$this->itemId},
-            'text' => is_callable($itemLabel) ? $itemLabel($e) : $e->{$itemLabel},
+        $fm = array(
+            'id' => $m->{$this->itemId},
+            'text' => is_callable($itemLabel) ? $itemLabel($m) : $m->{$itemLabel},
         );
         if (!empty($this->itemLink)) {
             $func = $this->itemLink;
-            $fe['link'] = $func($e);
+            $fm['link'] = $func($m);
         }
-        return $fe;
+        return $fm;
     }
     
     /**
