@@ -26,7 +26,7 @@
   background: none;
   padding: 0;
   border-color: #cccccc;
-  border-radius: 3px;
+  border-radius: 4px;
   color: #555555;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #ffffff;
@@ -36,7 +36,7 @@
 }
 .select2-search input {
   border-color: #cccccc;
-  border-radius: 3px;
+  border-radius: 4px;
   color: #555555;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #ffffff;
@@ -52,7 +52,7 @@
  * Adjust Select2 input heights to match the Bootstrap default.
  */
 .select2-container .select2-choice {
-  height: 31px;
+  height: 34px;
   line-height: 1.42857143;
 }
 /**
@@ -68,26 +68,26 @@
  */
 .select2-container.input-sm .select2-choice,
 .input-group-sm .select2-container .select2-choice {
-  height: 28px;
+  height: 30px;
   line-height: 1.5;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 .select2-container.input-lg .select2-choice,
 .input-group-lg .select2-container .select2-choice {
-  height: 42px;
+  height: 46px;
   line-height: 1.3333333;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 .select2-container-multi .select2-choices .select2-search-field input {
-  height: 29px;
+  height: 32px;
 }
 .select2-container-multi.input-sm .select2-choices .select2-search-field input,
 .input-group-sm .select2-container-multi .select2-choices .select2-search-field input {
-  height: 26px;
+  height: 28px;
 }
 .select2-container-multi.input-lg .select2-choices .select2-search-field input,
 .input-group-lg .select2-container-multi .select2-choices .select2-search-field input {
-  height: 40px;
+  height: 44px;
 }
 /**
  * Adjust height and line-height for .select2-search-field amd multi-select Select2 widgets.
@@ -292,8 +292,8 @@
 .select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
   border-top-right-radius: 0 !important;
   border-top-left-radius: 0 !important;
-  border-bottom-right-radius: 3px !important;
-  border-bottom-left-radius: 3px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
   background: #ffffff;
   filter: none;
 }
@@ -306,16 +306,16 @@
   border-top-right-radius: 0 !important;
 }
 .input-group.input-group-sm.select2-bootstrap-prepend .select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
-  border-bottom-right-radius: 2px !important;
+  border-bottom-right-radius: 3px !important;
 }
 .input-group.input-group-lg.select2-bootstrap-prepend .select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
-  border-bottom-right-radius: 5px !important;
+  border-bottom-right-radius: 6px !important;
 }
 .input-group.input-group-sm.select2-bootstrap-append .select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
-  border-bottom-left-radius: 2px !important;
+  border-bottom-left-radius: 3px !important;
 }
 .input-group.input-group-lg.select2-bootstrap-append .select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
-  border-bottom-left-radius: 5px !important;
+  border-bottom-left-radius: 6px !important;
 }
 /**
  * Adjust Select2's choices hover and selected styles to match Bootstrap 3's default dropdown styles.

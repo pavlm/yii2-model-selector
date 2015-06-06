@@ -37,5 +37,7 @@ echo Html::endTag('div');
 if (!$widget->manualInit) {
     $this->registerJs("\$('#".$widget->id."').modelSelector(".Json::encode($opts).");", View::POS_READY, $widget->id);
 }
-
+$this->registerCss('
+.ms-input-group { width: 100%; }
+');
 ?>
