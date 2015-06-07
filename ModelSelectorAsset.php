@@ -5,6 +5,8 @@ use yii\web\AssetBundle;
 
 class ModelSelectorAsset extends AssetBundle
 {
+    public $sourcePath = '@vendor/pavlm/yii2-model-selector/assets';
+    
     public $js = [
         'model-selector.js',
     ];
@@ -20,7 +22,6 @@ class ModelSelectorAsset extends AssetBundle
     
     public function init()
     {
-        $this->sourcePath = __DIR__ . '/assets';
         $this->depends[] = !$this->adminLTE ? 'pavlm\modelSelector\Select2BootstrapAsset' : 'pavlm\modelSelector\Select2AdminLTEAsset';
         parent::init();
     }

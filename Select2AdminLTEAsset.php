@@ -5,6 +5,8 @@ use yii\web\AssetBundle;
 
 class Select2AdminLTEAsset extends AssetBundle
 {
+    public $sourcePath = '@vendor/pavlm/yii2-model-selector/assets';
+    
     public $css = [
         'select2-adminlte.css',
     ];
@@ -12,11 +14,5 @@ class Select2AdminLTEAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-
-    public function init()
-    {
-        $this->sourcePath = __DIR__ . '/assets';
-        parent::init();
-    }
     
 }
