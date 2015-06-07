@@ -1,5 +1,9 @@
 yii2-model-selector
 ===========
+Yii2 widget to replace html select in forms.  
+Based on select2 jquery plugin.  
+Bounded to ActiveRecord models.  
+Supports server side search and paging.  
 
 
 Installation

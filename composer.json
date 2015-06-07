@@ -1,6 +1,6 @@
 {
     "name": "pavlm/yii2-model-selector",
-    "description": "DB oriented replace for <select> with server-side items paging",
+    "description": "Yii2 widget to replace html <select>, has server-side items search and paging",
     "type": "yii2-extension",
     "authors": [
         {
