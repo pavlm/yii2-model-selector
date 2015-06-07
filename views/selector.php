@@ -3,13 +3,9 @@ use yii\helpers\Html;
 use yii\web\View;
 use yii\helpers\Json;
 use pavlm\modelSelector\ModelSelectorAsset;
-use pavlm\modelSelector\Select2Asset;
-use pavlm\modelSelector\Select2BootstrapAsset;
 
 /* @var $widget pavlm\modelSelector\ModelSelector */
 /* @var $this yii\web\View */
-Select2Asset::register($this);
-Select2BootstrapAsset::register($this);
 ModelSelectorAsset::register($this);
 
 $widget = $this->context;
