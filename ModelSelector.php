@@ -221,7 +221,8 @@ class ModelSelector extends InputWidget
     public function loadModel($pk)
     {
         $q = $this->getActiveQuery();
-        $q->where([$this->itemId => $pk]);
+        $class = $q->modelClass;
+        $q->where([$class::tableName() . '.' . $this->itemId => $pk]);
         return $q->one();
     }
     
