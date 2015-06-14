@@ -1,6 +1,6 @@
 {
     "name": "pavlm/yii2-model-selector",
-    "description": "Yii2 widget to replace html <select>, has server-side items search and paging",
+    "description": "DB bounded item selector widget based on select2. It has server-side items search and paging",
     "type": "yii2-extension",
     "authors": [
         {
