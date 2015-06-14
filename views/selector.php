@@ -14,10 +14,13 @@ $selected = !empty($opts['model']);
 $defaultOptions = [
     'class' => 'model-selector input-group ms-input-group',
 ];
+if ($widget->itemLink) {
+    $defaultOptions['class'] .= ' select2-bootstrap-append';
+}
 $wrapId = $widget->id . '-wrap';
 ?>
 
-<? 
+<?
 echo Html::beginTag('div', array_merge($defaultOptions, $widget->options, ['id' => $wrapId, 'data-options' => ($widget->manualInit ? $opts : null)]));
 ?>
 	<? 
