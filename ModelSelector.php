@@ -6,6 +6,7 @@ use yii\widgets\InputWidget;
 use yii\db\ActiveQuery;
 use yii\helpers\Html;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * 
@@ -144,7 +145,7 @@ class ModelSelector extends InputWidget
         $data = array(
             'ajaxId' => $this->getAjaxId(),
             'value' => $val,
-            'ajaxUrl' => $this->ajaxRoute ? Yii::$app->createUrl($this->ajaxRoute) : null,
+            'ajaxUrl' => $this->ajaxRoute ? Url::to($this->ajaxRoute) : null,
             'ajaxView' => $this->ajaxRoute ? $this->ajaxView : null,
             'listPageSize' => $this->listPageSize,
             'model' => $m,
