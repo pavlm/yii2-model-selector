@@ -29,6 +29,14 @@
         	            };
         	            if (self.options.postDataPrepare)
         	            	self.options.postDataPrepare(postData);
+        	            if (self.options.postFormData) {
+        	            	var $form = self.$el.closest('form');
+        	            	var formData = $form.serializeArray();
+        	            	for (p in postData) {
+        	            		formData.push({name:p, value:postData[p]});
+        	            	}
+        	            	postData = formData;
+        	            }
         	            return postData;
         	        },
         	        results: function (data, page) {
@@ -72,7 +80,8 @@
 			allowClear : true,
 			minimumInputLength : 0,
 			width : 'resolve'
-		}
+		},
+		postFormData : false,
 	};
 
     $.fn['modelSelector'] = function ( options ) {
