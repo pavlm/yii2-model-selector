@@ -191,7 +191,8 @@ class ModelSelector extends InputWidget
                 } else {
                     // search by words
                     $splitter = is_bool($this->splitSearchQuery) ? "#\s+#" : $this->splitSearchQuery;
-                    $words = array_filter(array_splice(preg_split($splitter, $filter), 0, $this->splitToMaxWords));
+                    $words = preg_split($splitter, $filter);
+                    $words = array_filter(array_splice($words, 0, $this->splitToMaxWords));
                     $conditions = [];
                     foreach ($words as $word) {
                         $wconditions = [];
